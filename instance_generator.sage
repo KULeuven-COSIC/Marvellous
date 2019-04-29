@@ -19,7 +19,7 @@ class Vision:
     # generate a mxm MDS matrix over F
     @staticmethod
     def MDS_matrix( F, m ):
-        z = F.gen()
+        z = F.primitive_element()
         mat = matrix([[z^(i*j) for j in range(0, 2*m)] for i in range(0, m)])
         return mat.echelon_form()[:, m:]
 
@@ -259,7 +259,7 @@ class Rescue:
     # generate a mxm MDS matrix over F
     @staticmethod
     def MDS_matrix( F, m ):
-        z = F.gen()
+        z = F.primitive_element()
         mat = matrix([[z^(i*j) for j in range(0, 2*m)] for i in range(0, m)])
         return mat.echelon_form()[:, m:]
 
