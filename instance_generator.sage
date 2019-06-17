@@ -3,6 +3,8 @@ from CompactFIPS202 import SHA3_256, SHAKE256
 
 class Vision:
     def __init__( self, security_level, n, m ):
+        if version() != 'SageMath version 8.7, Release Date: 2019-03-23':
+            print "Warning: SageMath should be version 8.7, test vectors might differ"
         self.security_level = security_level
         assert n >= security_level, "state size (n) must be at least as large as security level"
         assert n % m == 0, "m must divide n"
@@ -237,6 +239,8 @@ class Vision:
 
 class Rescue:
     def __init__( self, security_level, q, m ):
+        if version() != 'SageMath version 8.7, Release Date: 2019-03-23':
+           print "Warning: SageMath should be version 8.7, test vectors might differ"
         assert log(1.0*q, 2.0) * m >= security_level , "state must have as least security_level-many bits!"
         self.security_level = security_level
         self.F = Rescue.first_field(q)
