@@ -1,17 +1,16 @@
+# coding: utf-8
 from binascii import hexlify
 from CompactFIPS202 import SHA3_256, SHAKE256
 
 class Vision:
     def __init__( self, security_level, n, m ):
-        if version() != 'SageMath version 8.7, Release Date: 2019-03-23':
-            print "Warning: SageMath should be version 8.7, test vectors might differ"
         self.security_level = security_level
         assert n >= security_level, "state size (n) must be at least as large as security level"
         assert n % m == 0, "m must divide n"
         self.n = n
         self.m = m
-        self.rate = floor(m/2)
-        self.capacity = m - self.rate
+        # self.rate = floor(m/2)
+        # self.capacity = m - self.rate
         self.Nb = 2*ceil((1.0 * security_level) / (5.5*m))
 
         self.F = self.field(n,m)
@@ -111,7 +110,7 @@ class Vision:
     def linearized_is_invertible( coefficients ):
         F = coefficients[0].parent()
         deg = F.modulus().degree()
-        mat = copy(MatrixSpace(F, deg, deg).zero())
+        mat = copy(MatrixSpace(F, deg, deg, sparse=True).zero())
         for i in range(0, min(deg, len(coefficients))):
             mat[0,i] = coefficients[i]
         for i in range(1, deg):
@@ -141,7 +140,8 @@ class Vision:
         factorization = factor(deg)
         # for all possible subfield orders, try raising the power order
         for fact, multiplicity in factorization:
-            if constant^(2^(deg/fact)) == constant: # if that power sends the element to itself, it generates only the subfield
+            subfield_power = int(2^(deg/fact))
+            if constant^subfield_power == constant: # if that power sends the element to itself, it generates only the subfield
                 return False
         # all tests succeed
         return True
@@ -175,7 +175,7 @@ class Vision:
         print "# Parameters"
         print "security level:", self.security_level
         print "n: %i \t m: %i \t Nb: %i" % (self.n, self.m, self.Nb)
-        print "rate:", self.rate, " \t capacity:", self.capacity
+        # print "rate:", self.rate, " \t capacity:", self.capacity
         print "field:", self.F, "... with modulus:", self.F.modulus()
         print "B[0]:", self.B[0]
         print "B[1]:", self.B[1]
@@ -221,32 +221,28 @@ class Vision:
         return data_state
 
     # evaluate the sponge function
-    def Sponge( self, inputs, num_out ):
+    def Sponge( self, inputs, rate ):
         key = matrix(self.F, [[self.F.zero()]] * self.m)
         state = matrix(self.F, [[self.F.zero()]] * self.m)
         for i in range(0, len(inputs)):
-            if i != 0 and i%self.rate == 0:
+            if i != 0 and i%rate == 0:
                 state = self.BlockCipher(key, state)
-            state[i%self.rate,0] += inputs[i]
+            state[i%rate,0] += inputs[i]
 
         outputs = []
-        for i in range(0, num_out):
-            if i%self.rate == 0:
-                state = self.BlockCipher(key, state)
-            outputs.append(state[i%self.rate,0])
+        for i in range(0, rate):
+            outputs.append(state[i%rate,0])
 
         return outputs
 
 class Rescue:
     def __init__( self, security_level, q, m ):
-        if version() != 'SageMath version 8.7, Release Date: 2019-03-23':
-           print "Warning: SageMath should be version 8.7, test vectors might differ"
         assert log(1.0*q, 2.0) * m >= security_level , "state must have as least security_level-many bits!"
         self.security_level = security_level
         self.F = Rescue.first_field(q)
         self.m = m
-        self.rate = floor(m/2)
-        self.capacity = m - self.rate
+        #self.rate = floor(m/2)
+        #self.capacity = m - self.rate
 
         # We set alpha = 3. This can be chanegd but requires an adaptation to the number of rounds
         self.alpha = 3
@@ -418,18 +414,31 @@ class Rescue:
         return data_state
 
     # evaluate the sponge function
-    def Sponge( self, inputs, num_out ):
+    def Sponge( self, inputs, rate ):
         key = matrix(self.F, [[self.F.zero()]] * self.m)
         state = matrix(self.F, [[self.F.zero()]] * self.m)
         for i in range(0, len(inputs)):
-            if i != 0 and i%self.rate == 0:
+            if i != 0 and i%rate == 0:
                 state = self.BlockCipher(key, state)
-            state[i%self.rate,0] += inputs[i]
+            state[i%rate,0] += inputs[i]
 
         outputs = []
-        for i in range(0, num_out):
-            if i%self.rate == 0:
-                state = self.BlockCipher(key, state)
-            outputs.append(state[i%self.rate,0])
+        for i in range(0, rate):
+            outputs.append(state[i%rate,0])
 
         return outputs
+
+# S = 128 # Security level
+# n = 129 # Size of the base field
+# p = random_prime(2^n-1,False,2^(n-1)) # A prime of bitsize n
+# m = 12 # Number of base field elements
+# c = 2 # Number of elements dedicated to the capacity
+# vision = Vision(S, m*n, m)
+# field = vision.F
+# plaintext = [field.random_element() for i in range(m-c)]
+# print "Vision instance: ", vision, " and an evaluation: ", Vision.Sponge(vision, plaintext, m-c)
+#
+# rescue = Rescue(S, p, m)
+# field = rescue.F
+# plaintext = [field.random_element() for i in range(m-c)]
+# print "Rescue instance: ", rescue, " and an evaluation: ", Rescue.Sponge(rescue, plaintext, m-c)
