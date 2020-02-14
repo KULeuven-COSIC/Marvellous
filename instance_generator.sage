@@ -224,10 +224,10 @@ class Vision:
     def Sponge( self, inputs, rate ):
         key = matrix(self.F, [[self.F.zero()]] * self.m)
         state = matrix(self.F, [[self.F.zero()]] * self.m)
-        for i in range(0, len(inputs)):
-            if i != 0 and i%rate == 0:
-                state = self.BlockCipher(key, state)
-            state[i%rate,0] += inputs[i]
+        for i in range(0, len(inputs), rate):
+            for j in range(min(rate, len(inputs)-i)):
+                state[j,0] += inputs[j+i]
+            state = self.BlockCipher(key, state)
 
         outputs = []
         for i in range(0, rate):
@@ -413,14 +413,14 @@ class Rescue:
 
         return data_state
 
-    # evaluate the sponge function
+    # evaluate the sponge function WITHOUT padding
     def Sponge( self, inputs, rate ):
         key = matrix(self.F, [[self.F.zero()]] * self.m)
         state = matrix(self.F, [[self.F.zero()]] * self.m)
-        for i in range(0, len(inputs)):
-            if i != 0 and i%rate == 0:
-                state = self.BlockCipher(key, state)
-            state[i%rate,0] += inputs[i]
+        for i in range(0, len(inputs), rate):
+            for j in range(min(rate, len(inputs)-i)):
+                state[j,0] += inputs[j+i]
+            state = self.BlockCipher(key, state)
 
         outputs = []
         for i in range(0, rate):
