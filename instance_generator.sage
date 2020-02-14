@@ -436,9 +436,9 @@ class Rescue:
 # vision = Vision(S, m*n, m)
 # field = vision.F
 # plaintext = [field.random_element() for i in range(m-c)]
-# print "Vision instance: ", vision, " and an evaluation: ", Vision.Sponge(vision, plaintext, m-c)
+# print "Vision instance: ", vision, " and an evaluation (without padding): ", Vision.Sponge(vision, plaintext, m-c)
 #
 # rescue = Rescue(S, p, m)
 # field = rescue.F
 # plaintext = [field.random_element() for i in range(m-c)]
-# print "Rescue instance: ", rescue, " and an evaluation: ", Rescue.Sponge(rescue, plaintext, m-c)
+# print "Rescue instance: ", rescue, " and an evaluation (without padding): ", Rescue.Sponge(rescue, plaintext, m-c)
