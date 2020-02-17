@@ -251,7 +251,12 @@ class Rescue:
         g, a, b = xgcd(self.alpha, q-1)
         self.invalpha = a
 
-        self.Nb = max(10, 2*ceil((1.0 * security_level) / (4*m)))
+        if (self.alpha == 3):
+            self.Nb = max(10, 2*ceil((1.0 * security_level) / (4*m)))
+        elif (self.alpha == 5):
+            self.Nb = max(10, 2*ceil((1.0 * security_level) / (5.5*m)))
+        else :
+            self.Nb = max(10, 2*ceil((1.0 * security_level) / (5.5*m)))
 
         self.MDS = Rescue.MDS_matrix(self.F, self.m)
         self.initial_constant, self.constants_matrix, self.constants_constant = Rescue.sample_parameters(self.F, self.m)
@@ -397,6 +402,7 @@ class Rescue:
         key_injection = self.initial_constant
         key_state += key_injection
         data_state += key_state
+        print key_injection.transpose()
 
         for r in range(0, 2*self.Nb):
             if r % 2 == 0:
@@ -408,6 +414,7 @@ class Rescue:
                     key_state[i,0] = key_state[i,0]^self.alpha
                     data_state[i,0] = data_state[i,0]^self.alpha
             key_injection = self.constants_matrix * key_injection + self.constants_constant
+            print key_injection.transpose()
             key_state = self.MDS * key_state + key_injection
             data_state = self.MDS * data_state + key_state
 
