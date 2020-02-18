@@ -11,7 +11,7 @@ class Vision:
         self.m = m
         # self.rate = floor(m/2)
         # self.capacity = m - self.rate
-        self.Nb = max(10, 2*ceil((1.0 * security_level) / (5.5*m)))
+        self.Nb = max(10, 2*ceil((1.0 * security_level) / (7.5*m)))
 
         self.F = self.field(n,m)
         self.B, self.Binv, self.initial_constant, self.constants_matrix, self.constants_constant = Vision.sample_parameters(self.F, self.m)
