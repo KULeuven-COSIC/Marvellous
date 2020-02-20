@@ -402,7 +402,6 @@ class Rescue:
         key_injection = self.initial_constant
         key_state += key_injection
         data_state += key_state
-        print key_injection.transpose()
 
         for r in range(0, 2*self.Nb):
             if r % 2 == 0:
@@ -414,7 +413,6 @@ class Rescue:
                     key_state[i,0] = key_state[i,0]^self.alpha
                     data_state[i,0] = data_state[i,0]^self.alpha
             key_injection = self.constants_matrix * key_injection + self.constants_constant
-            print key_injection.transpose()
             key_state = self.MDS * key_state + key_injection
             data_state = self.MDS * data_state + key_state
 
