@@ -201,7 +201,7 @@ class Vision:
             key_injection = self.constants_matrix * key_injection + self.constants_constant
 
             # key schedule
-            key_state = matrix([[key_state[i,0]^(2^(self.n/self.m)-2)] for i in range(0,self.m)])
+            key_state = matrix([[key_state[i,0]^int(2^(self.n/self.m)-2)] for i in range(0,self.m)])
             if r % 2 == 0:
                 key_state = matrix([[self.Binv[0] + sum(key_state[i,0]^(2^(j-1)) * self.Binv[j] for j in range(1, len(self.Binv)))] for i in range(0, self.m)])
             else:
@@ -210,7 +210,7 @@ class Vision:
             key_state += key_injection
 
             # data path
-            data_state = matrix([[data_state[i,0]^(2^(self.n/self.m)-2)] for i in range(0,self.m)])
+            data_state = matrix([[data_state[i,0]^int(2^(self.n/self.m)-2)] for i in range(0,self.m)])
             if r % 2 == 0:
                 data_state = matrix([[self.Binv[0] + sum(data_state[i,0]^(2^(j-1)) * self.Binv[j] for j in range(1, len(self.Binv)))] for i in range(0, self.m)])
             else:
