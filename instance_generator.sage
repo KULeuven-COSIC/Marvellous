@@ -434,11 +434,11 @@ class Rescue:
         return outputs
 
 # S = 128 # Security level
-# n = 129 # Size of the base field
+# field_size = 129 # Size of the base field
 # p = random_prime(2^n-1,False,2^(n-1)) # A prime of bitsize n
 # m = 12 # Number of base field elements
 # c = 2 # Number of elements dedicated to the capacity
-# vision = Vision(S, m*n, m)
+# vision = Vision(S, m*field_size, m)
 # field = vision.F
 # plaintext = [field.random_element() for i in range(m-c)]
 # print "Vision instance: ", vision, " and an evaluation (without padding): ", Vision.Sponge(vision, plaintext, m-c)
