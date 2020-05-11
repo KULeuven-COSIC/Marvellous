@@ -236,7 +236,7 @@ class Vision:
         return outputs
 
 class Rescue:
-    def __init__( self, security_level, q, m ):
+    def __init__( self, security_level, q, m, alpha ):
         assert log(1.0*q, 2.0) * m >= security_level , "state must have as least security_level-many bits!"
         self.security_level = security_level
         self.F = Rescue.first_field(q)
@@ -244,8 +244,7 @@ class Rescue:
         #self.rate = floor(m/2)
         #self.capacity = m - self.rate
 
-        # We set alpha = 3. This can be chanegd but requires an adaptation to the number of rounds
-        self.alpha = 3
+        self.alpha = alpha
         while gcd(self.alpha, q-1) != 1:
             self.alpha += 2;
         g, a, b = xgcd(self.alpha, q-1)
@@ -393,6 +392,7 @@ class Rescue:
         print "initial constant:\n", self.initial_constant
         print "constants matrix:\n", self.constants_matrix
         print "constants constant:\n", self.constants_constant
+        print "alpha:\n", self.alpha
 
     # evaluate the block cipher in forward direction
     def BlockCipher( self, key, ptxt ):
@@ -438,12 +438,13 @@ class Rescue:
 # p = random_prime(2^n-1,False,2^(n-1)) # A prime of bitsize n
 # m = 12 # Number of base field elements
 # c = 2 # Number of elements dedicated to the capacity
+# alpha = 3 # Exponent for Rescue's power map
 # vision = Vision(S, m*field_size, m)
 # field = vision.F
 # plaintext = [field.random_element() for i in range(m-c)]
 # print "Vision instance: ", vision, " and an evaluation (without padding): ", Vision.Sponge(vision, plaintext, m-c)
 #
-# rescue = Rescue(S, p, m)
+# rescue = Rescue(S, p, m, alpha)
 # field = rescue.F
 # plaintext = [field.random_element() for i in range(m-c)]
 # print "Rescue instance: ", rescue, " and an evaluation (without padding): ", Rescue.Sponge(rescue, plaintext, m-c)
