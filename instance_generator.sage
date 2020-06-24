@@ -387,7 +387,7 @@ class Rescue:
         print "# Parameters"
         print "security level:", self.security_level
         print "q:", self.F.order(), "\tm:", self.m, "\tNb:", self.Nb
-        print "rate:", self.rate, "\tcapacity:", self.capacity
+        # print "rate:", self.rate, "\tcapacity:", self.capacity
         print "field:", self.F
         print "initial constant:\n", self.initial_constant
         print "constants matrix:\n", self.constants_matrix
