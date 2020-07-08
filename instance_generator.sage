@@ -3,11 +3,11 @@ from binascii import hexlify
 from CompactFIPS202 import SHA3_256, SHAKE256
 
 class Vision:
-    def __init__( self, security_level, n, m ):
+    def __init__( self, security_level, nm, m ):
         self.security_level = security_level
         assert n >= security_level, "state size (n) must be at least as large as security level"
         assert n % m == 0, "m must divide n"
-        self.n = n
+        self.n = nm
         self.m = m
         # self.rate = floor(m/2)
         # self.capacity = m - self.rate
@@ -174,7 +174,7 @@ class Vision:
     def Parameters( self ):
         print "# Parameters"
         print "security level:", self.security_level
-        print "n: %i \t m: %i \t Nb: %i" % (self.n, self.m, self.Nb)
+        print "nm: %i \t m: %i \t Nb: %i" % (self.n, self.m, self.Nb)
         # print "rate:", self.rate, " \t capacity:", self.capacity
         print "field:", self.F, "... with modulus:", self.F.modulus()
         print "B[0]:", self.B[0]
