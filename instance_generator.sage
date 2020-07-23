@@ -48,7 +48,7 @@ class Vision:
     @staticmethod
     def sample_parameters( F, m ):
         seed = "winteriscoming"
-        seed = bytearray(seed)
+        seed = bytearray(seed.encode('utf-8'))
 
         buf_len = 1 # bytes
         have_params = False
@@ -172,21 +172,21 @@ class Vision:
 
     # print parameters
     def Parameters( self ):
-        print "# Parameters"
-        print "security level:", self.security_level
-        print "nm: %i \t m: %i \t Nb: %i" % (self.n, self.m, self.Nb)
-        # print "rate:", self.rate, " \t capacity:", self.capacity
-        print "field:", self.F, "... with modulus:", self.F.modulus()
-        print "B[0]:", self.B[0]
-        print "B[1]:", self.B[1]
-        print "B[2]:", self.B[2]
-        print "B[3]:", self.B[3]
-        print "initial constant:"
-        print self.initial_constant
-        print "constants matrix:"
-        print self.constants_matrix
-        print "constants constant:"
-        print self.constants_constant
+        print("# Parameters")
+        print("security level:", self.security_level)
+        print("nm: %i \t m: %i \t Nb: %i" % (self.n, self.m, self.Nb))
+        # print"rate:", self.rate, " \t capacity:", self.capacity
+        print("field:", self.F, "... with modulus:", self.F.modulus())
+        print("B[0]:", self.B[0])
+        print("B[1]:", self.B[1])
+        print("B[2]:", self.B[2])
+        print("B[3]:", self.B[3])
+        print("initial constant:")
+        print(self.initial_constant)
+        print("constants matrix:")
+        print(self.constants_matrix)
+        print("constants constant:")
+        print(self.constants_constant)
 
     # evaluate the block cipher
     def BlockCipher( self, key, ptxt ):
@@ -320,7 +320,7 @@ class Rescue:
     @staticmethod
     def sample_parameters( F, m ):
         seed = "winteriscoming"
-        seed = bytearray(seed)
+        seed = bytearray(seed.encode('utf-8'))
 
         buf_len = 1 # bytes
         have_params = False
@@ -384,15 +384,15 @@ class Rescue:
 
     # print the parameters
     def Parameters( self ):
-        print "# Parameters"
-        print "security level:", self.security_level
-        print "q:", self.F.order(), "\tm:", self.m, "\tNb:", self.Nb
-        # print "rate:", self.rate, "\tcapacity:", self.capacity
-        print "field:", self.F
-        print "initial constant:\n", self.initial_constant
-        print "constants matrix:\n", self.constants_matrix
-        print "constants constant:\n", self.constants_constant
-        print "alpha:\n", self.alpha
+        print("# Parameters")
+        print("security level:", self.security_level)
+        print("q:", self.F.order(), "\tm:", self.m, "\tNb:", self.Nb)
+        # print("rate:", self.rate, "\tcapacity:", self.capacity)
+        print("field:", self.F)
+        print("initial constant:\n", self.initial_constant)
+        print("constants matrix:\n", self.constants_matrix)
+        print("constants constant:\n", self.constants_constant)
+        print("alpha:\n", self.alpha)
 
     # evaluate the block cipher in forward direction
     def BlockCipher( self, key, ptxt ):
@@ -442,9 +442,9 @@ class Rescue:
 # vision = Vision(S, m*field_size, m)
 # field = vision.F
 # plaintext = [field.random_element() for i in range(m-c)]
-# print "Vision instance: ", vision, " and an evaluation (without padding): ", Vision.Sponge(vision, plaintext, m-c)
+# print("Vision instance: ", vision, " and an evaluation (without padding): ", Vision.Sponge(vision, plaintext, m-c))
 #
 # rescue = Rescue(S, p, m, alpha)
 # field = rescue.F
 # plaintext = [field.random_element() for i in range(m-c)]
-# print "Rescue instance: ", rescue, " and an evaluation (without padding): ", Rescue.Sponge(rescue, plaintext, m-c)
+# print("Rescue instance: ", rescue, " and an evaluation (without padding): ", Rescue.Sponge(rescue, plaintext, m-c))
