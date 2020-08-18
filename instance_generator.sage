@@ -279,12 +279,7 @@ class Rescue:
         Fpx.<x> = PolynomialRing(Fp, "x")
 
         integer = 1
-        expansion = []
-        int_cpy = copy(integer)
-        while int_cpy > 0:
-            expansion.append(int_cpy % p)
-            int_cpy = int_cpy // p
-        poly = Fp(1) * x^d + sum(Fp(expansion[i]) * x^i for i in range(0, len(expansion)))
+        poly = Fp(1) * x^d + Fp(1)
         while not poly.is_irreducible():
             integer += 1
             int_cpy = copy(integer)
@@ -333,8 +328,8 @@ class Rescue:
             except BufferError:
                 continue
 
-        initial_constant = matrix([[constants[i]] for i in range(0, m)])
-        constants_matrix = matrix([[constants[m+i*m+j] for j in range(0,m)] for i in range(0,m)])
+        constants_matrix = matrix([[constants[i*m+j] for j in range(0,m)] for i in range(0,m)])
+        initial_constant = matrix([[constants[m+i]] for i in range(0, m)])
         constants_constant = matrix([[constants[m+m^2+i]] for i in range(0,m)])
         return initial_constant, constants_matrix, constants_constant
 
@@ -348,7 +343,7 @@ class Rescue:
         chunk_size = ceil(log(1.0*F.order(),2.0) / 8 ) + 1
         while len(constants) != 2*m + m^2:
             have_constant = False
-            while have_constant == False:
+            while not have_constant:
                 if counter+chunk_size > len(randomness):
                     raise BufferError
                 constant = Rescue.field_element_from_bytes(F, randomness[counter:(counter+chunk_size)])
@@ -358,7 +353,7 @@ class Rescue:
                 # subfields do we accept it
                 if Rescue.is_generator(F, constant):
                     constants.append(constant)
-                    break
+                    have_constant = True
 
             # if the m^2 first constants do not
             # define an invertible matrix, reject them
