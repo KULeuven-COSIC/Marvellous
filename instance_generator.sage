@@ -328,8 +328,8 @@ class Rescue:
             except BufferError:
                 continue
 
-        initial_constant = matrix([[constants[i]] for i in range(0, m)])
-        constants_matrix = matrix([[constants[m+i*m+j] for j in range(0,m)] for i in range(0,m)])
+        constants_matrix = matrix([[constants[i*m+j] for j in range(0,m)] for i in range(0,m)])
+        initial_constant = matrix([[constants[m+i]] for i in range(0, m)])
         constants_constant = matrix([[constants[m+m^2+i]] for i in range(0,m)])
         return initial_constant, constants_matrix, constants_constant
 
