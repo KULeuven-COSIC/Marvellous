@@ -343,7 +343,7 @@ class Rescue:
         chunk_size = ceil(log(1.0*F.order(),2.0) / 8 ) + 1
         while len(constants) != 2*m + m^2:
             have_constant = False
-            while have_constant == False:
+            while not have_constant:
                 if counter+chunk_size > len(randomness):
                     raise BufferError
                 constant = Rescue.field_element_from_bytes(F, randomness[counter:(counter+chunk_size)])
@@ -353,7 +353,7 @@ class Rescue:
                 # subfields do we accept it
                 if Rescue.is_generator(F, constant):
                     constants.append(constant)
-                    break
+                    have_constant = True
 
             # if the m^2 first constants do not
             # define an invertible matrix, reject them
