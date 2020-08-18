@@ -279,12 +279,7 @@ class Rescue:
         Fpx.<x> = PolynomialRing(Fp, "x")
 
         integer = 1
-        expansion = []
-        int_cpy = copy(integer)
-        while int_cpy > 0:
-            expansion.append(int_cpy % p)
-            int_cpy = int_cpy // p
-        poly = Fp(1) * x^d + sum(Fp(expansion[i]) * x^i for i in range(0, len(expansion)))
+        poly = Fp(1) * x^d + Fp(1)
         while not poly.is_irreducible():
             integer += 1
             int_cpy = copy(integer)
