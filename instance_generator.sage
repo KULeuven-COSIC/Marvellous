@@ -5,15 +5,15 @@ from CompactFIPS202 import SHA3_256, SHAKE256
 class Vision:
     def __init__( self, security_level, nm, m ):
         self.security_level = security_level
-        assert n >= security_level, "state size (n) must be at least as large as security level"
-        assert n % m == 0, "m must divide n"
+        assert nm >= security_level, "state size (n) must be at least as large as security level"
+        assert nm % m == 0, "m must divide n"
         self.n = nm
         self.m = m
         # self.rate = floor(m/2)
         # self.capacity = m - self.rate
         self.Nb = max(10, 2*ceil((1.0 * security_level + m + 8) / (8*m)))
 
-        self.F = self.field(n,m)
+        self.F = self.field(nm,m)
         self.B, self.Binv, self.initial_constant, self.constants_matrix, self.constants_constant = Vision.sample_parameters(self.F, self.m)
         self.MDS = Vision.MDS_matrix(self.F, self.m)
 
