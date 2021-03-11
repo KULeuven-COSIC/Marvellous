@@ -329,7 +329,7 @@ class Rescue:
                 continue
 
         constants_matrix = matrix([[constants[i*m+j] for j in range(0,m)] for i in range(0,m)])
-        initial_constant = matrix([[constants[m+i]] for i in range(0, m)])
+        initial_constant = matrix([[constants[m^2+i]] for i in range(0, m)])
         constants_constant = matrix([[constants[m+m^2+i]] for i in range(0,m)])
         return initial_constant, constants_matrix, constants_constant
 
