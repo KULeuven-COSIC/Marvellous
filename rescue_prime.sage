@@ -176,4 +176,3 @@ def rescue_prime_sponge( parameters, input_sequence, output_length ):
             state = rescue_XLIX_permutation(parameters, state)
 
     return output_sequence[:output_length]
-
